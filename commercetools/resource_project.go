@@ -1,9 +1,10 @@
 package commercetools
 
 import (
+	"log"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/labd/commercetools-go-sdk/commercetools"
-	"log"
 )
 
 func resourceProjectSettings() *schema.Resource {
@@ -67,6 +68,11 @@ func resourceProjectSettings() *schema.Resource {
 						},
 					},
 				},
+			},
+			"shipping_rate_input_type": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 			"version": {
 				Type:     schema.TypeInt,
@@ -135,6 +141,7 @@ func resourceProjectRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("currencies", project.Currencies)
 	d.Set("countries", project.Countries)
 	d.Set("languages", project.Languages)
+	d.Set("shipping_rate_input_type", project.ShippingRateInputType)
 	d.Set("external_oauth", project.ExternalOAuth)
 	// d.Set("createdAt", project.CreatedAt)
 	// d.Set("trialUntil", project.TrialUntil)
@@ -215,6 +222,13 @@ func projectUpdate(d *schema.ResourceData, client *commercetools.Client, version
 		input.Actions = append(
 			input.Actions,
 			&commercetools.ProjectChangeMessagesEnabledAction{MessagesEnabled: enabled})
+	}
+
+	if d.HasChange("shipping_rate_input_type") {
+		newShippingRateInputType := d.Get("shipping_rate_input_type").(commercetools.ShippingRateInputType)
+		input.Actions = append(
+			input.Actions,
+			&commercetools.ProjectSetShippingRateInputTypeAction{ShippingRateInputType: newShippingRateInputType})
 	}
 
 	if d.HasChange("external_oauth") {
