@@ -70,9 +70,16 @@ func resourceProjectSettings() *schema.Resource {
 				},
 			},
 			"shipping_rate_input_type": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeMap,
 				Optional: true,
-				Elem:     &schema.Schema{Type: schema.TypeString},
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"type": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+					},
+				},
 			},
 			"version": {
 				Type:     schema.TypeInt,
