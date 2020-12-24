@@ -78,6 +78,23 @@ func resourceProjectSettings() *schema.Resource {
 							Type:     schema.TypeString,
 							Required: true,
 						},
+						"values": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"key": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"label": {
+										Type:     schema.TypeMap,
+										Required: true,
+										Elem:     schema.Schema{Type: schema.TypeString},
+									},
+								},
+							},
+						},
 					},
 				},
 			},

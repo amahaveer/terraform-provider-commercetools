@@ -144,7 +144,12 @@ func testAccProjectConfigUpdate() string {
 			  enabled = false
 			}
             shipping_rate_input_type = { 
-				type = "CartValue" 
+				type = "CartClassification"
+				values = [ 
+					{ key = "Small", label = { "en" = "Small", "de" = "Klein" } },
+					{ key = "Medium", label = { "en" = "Medium", "de" = "Mittel" } },
+					{ key = "Heavy", label = { "en" = "Heavy", "de" = "Schwergut" } },
+				]
             }
 		}`
 }
